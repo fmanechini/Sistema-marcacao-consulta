@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Consulta;
 use App\Entity\HorariosMedico;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
+use function Doctrine\ORM\QueryBuilder;
 
 /**
  * @method HorariosMedico|null find($id, $lockMode = null, $lockVersion = null)
@@ -36,15 +39,37 @@ class HorariosMedicoRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?HorariosMedico
+
+    public function findOneBySomeField($med, $diasemana, $data)
     {
-        return $this->createQueryBuilder('h')
-            ->andWhere('h.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+
+        $subQueryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $subQuery = $subQueryBuilder
+            ->select('hm.hora')
+            ->from(Consulta::class, 'cs')
+            ->innerJoin('cs.horarios_medico_idhorariosmedico', 'hm')
+            ->where('cs.medico_idmedico = :med and cs.dia_consulta = :dia2')
+            ->setParameters(array('med' => $med,
+                'dia2' => $data,
+            ))
         ;
+
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $query = $queryBuilder
+            ->select('h')
+            ->from(HorariosMedico::class, 'h')
+            ->innerJoin('h.medico_idmedico', 'm')
+            ->leftJoin('h.consulta_idconsulta', 'c')
+            ->where('m.id = :med and h.dia = :dia')
+            ->andWhere($queryBuilder->expr()->notIn('h.hora', $subQuery->getDQL()))
+            ->setParameters(array('med' => $med,
+                'dia' => $diasemana,
+                'dia2' => $data
+            ));
+        return $query;
+
     }
-    */
+
+
+
 }

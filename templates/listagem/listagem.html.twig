@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listagem de Consultas{% endblock %}
+{% block content %}
+
+    <div class="wrapper">
+        <div class="container" style="margin-top: 50px">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Data da Consulta</th>
+                            <th scope="col">Nome do Cliente</th>
+                            <th scope="col">Nome do Médico</th>
+                            <th scope="col">Horário</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for consulta in consultas %}
+                            <tr>
+                                <td>{{consulta.DiaConsulta.format('d/m/Y')}}</td>
+                                <td>{{consulta.getClienteIdcliente().getClinome()}}</td>
+                                <td>{{consulta.getMedicoIdmedico().getMenome()}}</td>
+                                <td>{{consulta.getHorariosMedicoIdhorariosmedico().getHora()}}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
