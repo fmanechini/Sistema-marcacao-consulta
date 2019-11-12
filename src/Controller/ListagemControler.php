@@ -27,7 +27,7 @@ class ListagemControler extends AbstractController
 
     public function gerenciarConsultas()
     {
-        $consultas = $this->getDoctrine()->getRepository(Consulta::class)->findAll();
+        $consultas = $this->getDoctrine()->getRepository(Consulta::class)->findAll(); //pega todas as consultas cadastradas no BD e renderiza na pagina listagem
         return $this->render('listagem/listagem.html.twig', [
             'consultas' => $consultas,
         ]);

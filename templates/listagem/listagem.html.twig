@@ -10,7 +10,7 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">Data da Consulta</th>
+                            <th scope="col">Data da Consulta</th> {#cria uma tabela com os campos seguintes#}
                             <th scope="col">Nome do Cliente</th>
                             <th scope="col">Nome do Médico</th>
                             <th scope="col">Horário</th>
@@ -18,9 +18,9 @@
                         </thead>
                         <tbody>
 
-                        {% for consulta in consultas %}
+                        {% for consulta in consultas %} {#loop para repetir para cada consulta existente#}
                             <tr>
-                                <td>{{consulta.DiaConsulta.format('d/m/Y')}}</td>
+                                <td>{{consulta.DiaConsulta.format('d/m/Y')}}</td> {#pega os dados pertinentes da consulta atraves dos metodos get#}
                                 <td>{{consulta.getClienteIdcliente().getClinome()}}</td>
                                 <td>{{consulta.getMedicoIdmedico().getMenome()}}</td>
                                 <td>{{consulta.getHorariosMedicoIdhorariosmedico().getHora()}}</td>
